@@ -82,10 +82,37 @@ const send = (res, code, body, type) => {
 };
 const json = (res, code, obj) => send(res, code, JSON.stringify(obj), "application/json; charset=utf-8");
 
-const serveFile = (res, filePath) => {
-  fs.readFile(filePath, (err, data) => {
-    if (err) return send(res, 404, "Not found");
-    send(res, 200, data, TYPES[path.extname(filePath).toLowerCase()] || "application/octet-stream");
+// Streams files and honours HTTP Range requests. iPhones (Safari) refuse to
+// play <video> from a server that can't do byte ranges — they just show a
+// blank tile — so this is required for the customer clips, not optional.
+const serveFile = (res, filePath, req) => {
+  fs.stat(filePath, (err, stat) => {
+    if (err || !stat.isFile()) return send(res, 404, "Not found");
+    const type = TYPES[path.extname(filePath).toLowerCase()] || "application/octet-stream";
+    const range = req && req.headers.range;
+    const base = {
+      "Content-Type": type,
+      "X-Content-Type-Options": "nosniff",
+      "Accept-Ranges": "bytes",
+      "Cache-Control": /\.(mp4|webm|jpg|jpeg|png|webp|avif|ico|woff2)$/i.test(filePath) ? "public, max-age=86400" : "no-store",
+    };
+    if (range) {
+      const m = /^bytes=(\d*)-(\d*)$/.exec(range);
+      let start = m && m[1] ? parseInt(m[1], 10) : 0;
+      let end = m && m[2] ? parseInt(m[2], 10) : stat.size - 1;
+      if (!m || isNaN(start) || start >= stat.size) {
+        res.writeHead(416, { "Content-Range": "bytes */" + stat.size });
+        return res.end();
+      }
+      end = Math.min(end, stat.size - 1);
+      res.writeHead(206, Object.assign(base, {
+        "Content-Range": "bytes " + start + "-" + end + "/" + stat.size,
+        "Content-Length": end - start + 1,
+      }));
+      return fs.createReadStream(filePath, { start, end }).pipe(res);
+    }
+    res.writeHead(200, Object.assign(base, { "Content-Length": stat.size }));
+    fs.createReadStream(filePath).pipe(res);
   });
 };
 
@@ -232,19 +259,16 @@ http
 
     // /b/<slug> — Bueno client pages; b.html reads the slug.
     if (pathname === "/b" || pathname.startsWith("/b/")) {
-      return serveFile(res, path.join(ROOT, "b.html"));
+      return serveFile(res, path.join(ROOT, "b.html"), req);
     }
 
-    if (ROUTES[pathname]) return serveFile(res, path.join(ROOT, ROUTES[pathname]));
+    if (ROUTES[pathname]) return serveFile(res, path.join(ROOT, ROUTES[pathname]), req);
 
     // Plain static, with a guard so nobody can walk out of the folder.
     const target = path.normalize(path.join(ROOT, pathname));
     if (!target.startsWith(ROOT)) return send(res, 403, "Forbidden");
 
-    fs.stat(target, (err, stat) => {
-      if (err || stat.isDirectory()) return send(res, 404, "Not found");
-      serveFile(res, target);
-    });
+    serveFile(res, target, req);
   })
   .listen(PORT, () => {
     console.log("Aquaveil store running on http://localhost:" + PORT);
