@@ -45,6 +45,26 @@ window.STORE = {
     },
   },
 
+  /* --- Promotion ------------------------------------------------------------ *
+   * A time-boxed offer shown in the announcement bar, the hero pill, the buy
+   * box and the checkout summary. Everything switches off by itself after
+   * `ends`, so you never have to remember to take it down.
+   *
+   * HONESTY RULES (these protect your Stripe account and your ad account):
+   *  - "Buy 1, Get 1 Free" means two showerheads really ship for $59.99.
+   *  - `soldThisMonth` is displayed to customers. Keep it a number you can
+   *    stand behind; update it as real orders come in. Set to 0 to hide.
+   * ----------------------------------------------------------------------- */
+  promo: {
+    enabled: true,
+    headline: "Buy 1, Get 1 Free",
+    detail: "Two Aquaveil showerheads ship for the price of one",
+    ends: "2026-09-19T23:59:59-05:00",     // 7 days from launch (Central time)
+    soldThisMonth: 50,                      // shown as "50+ sold this month"
+    // Line added to "Everything you get today" while the promo is running.
+    bonusLabel: "Second Aquaveil Showerhead",
+  },
+
   /* --- Site navigation ---------------------------------------------------- *
    * Used by chrome.js to build the header and footer on EVERY page, so nav
    * lives in exactly one place.
@@ -124,7 +144,17 @@ window.STORE = {
   /* --- Landing page -------------------------------------------------------- */
   landing: {
     heroEyebrow: "Filtered showerhead",
-    heroTitle: "It was never your skincare. It was your water.",
+    heroTitle: "It was never your skincare.",
+    heroTitleAccent: "It was your water.",   // rendered in italic gold after the title
+
+    // Small pill above the headline. The offer in one line. Leave "" to hide.
+    heroOffer: "Free hose, wall mount & 4 filters included",
+    // Sits next to the price.
+    heroPriceNote: "Free US shipping · 40-day money-back",
+    // Three short trust points under the buttons.
+    heroChips: ["2-minute install, no tools", "Fits every standard shower", "Ships within 24h"],
+    // Square/portrait photo used INSTEAD of the wide banner on phones.
+    heroImageMobile: "kit.jpg",
 
     // KEEP THIS TO ONE LINE. A hero gets about two seconds of attention —
     // headline, one supporting line, button. The full argument about mineral
@@ -734,7 +764,7 @@ window.STORE = {
    * ----------------------------------------------------------------------- */
   reviews: [
     {
-      name: "Marisol V.", location: "Dallas, TX", rating: 5, verified: true, group: "frizz",
+      name: "Marisol V.", location: "Dallas, TX", rating: 5, verified: true, group: "frizz", hero: true,
       title: "My hair finally lays flat",
       body: "We have really hard water in Dallas and my hair was always frizzy no matter what product I used. About a week in I noticed it was softer and I wasn't fighting tangles in the shower. Wish I'd done this years ago.",
     },

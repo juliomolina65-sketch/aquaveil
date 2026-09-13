@@ -166,6 +166,7 @@ async function api(req, res, pathname, url) {
     const body = await readBody(req);
     const qty = Math.max(1, Math.min(10, parseInt(body.quantity, 10) || 1));
     const finish = String(body.finish || "").slice(0, 40);
+    const bogo = body.bogo === true;
     const price = await defaultPriceId();
     const session = await stripe("POST", "/checkout/sessions", {
       ui_mode: "embedded",
@@ -175,7 +176,13 @@ async function api(req, res, pathname, url) {
       phone_number_collection: { enabled: "true" },
       allow_promotion_codes: "true",
       return_url: originOf(req) + "/thanks.html?session_id={CHECKOUT_SESSION_ID}",
-      metadata: { finish: finish || "Standard", source: "aquaveil-site" },
+      metadata: {
+        finish: finish || "Standard",
+        source: "aquaveil-site",
+        // Fulfilment note: during Buy-1-Get-1 every paid unit ships as two.
+        promo: bogo ? "buy1get1" : "none",
+        units_to_ship: String(bogo ? qty * 2 : qty),
+      },
     });
     return json(res, 200, { clientSecret: session.client_secret });
   }

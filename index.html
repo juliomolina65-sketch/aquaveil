@@ -8,6 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+<link rel="icon" href="favicon.ico" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -19,18 +22,38 @@
 
   <!-- ── Full-bleed landscape hero ──────────────────────────────────── -->
   <section class="banner banner--hero" data-hero-align>
-    <img class="banner__bg" data-l-image alt="" />
-    <span class="banner__scrim"></span>
+    <div class="banner__media">
+      <img class="banner__bg" data-l-image alt="" />
+      <img class="banner__bg banner__bg--mobile" data-l-image-mobile alt="" />
+      <span class="banner__scrim"></span>
+    </div>
     <div class="wrap banner__in">
-      <div class="banner__rating" data-l-rating hidden></div>
-      <span class="eyebrow eyebrow--light" data-l-eyebrow></span>
-      <h1 class="banner__title" data-l-title></h1>
-      <p class="banner__lede" data-l-body></p>
-      <div class="banner__actions">
-        <a class="btn btn--primary btn--lg" data-l-cta href="product.html"></a>
-        <a class="btn btn--glass btn--lg" href="#how">How it works</a>
+      <div class="hero-copy">
+        <span class="offer-pill" data-l-offer hidden>
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12v8H4v-8M2 7h20v5H2zM12 22V7M12 7c-2-3-5-3-5-1s3 1 5 1zM12 7c2-3 5-3 5-1s-3 1-5 1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>
+          <span data-l-offer-text></span>
+        </span>
+        <div class="banner__rating" data-l-rating hidden></div>
+        <span class="eyebrow eyebrow--light" data-l-eyebrow></span>
+        <h1 class="banner__title" data-l-title></h1>
+        <p class="banner__lede" data-l-body></p>
+        <div class="banner__price" data-l-price-row>
+          <strong data-l-price-now></strong>
+          <s data-l-price-was></s>
+          <span class="banner__price-note" data-l-price-note></span>
+        </div>
+        <div class="banner__actions">
+          <a class="btn btn--primary btn--lg" data-l-cta href="product.html"></a>
+          <a class="btn btn--glass btn--lg" href="#how">See how it works</a>
+        </div>
+        <ul class="hero-chips" data-l-chips></ul>
       </div>
     </div>
+    <a class="hero-card" href="#reviews" data-l-hero-review hidden>
+      <span class="hero-card__stars">★★★★★</span>
+      <p class="hero-card__quote" data-l-hero-review-quote></p>
+      <span class="hero-card__by" data-l-hero-review-by></span>
+    </a>
   </section>
 
   <!-- ── Highlight strip ────────────────────────────────────────────── -->

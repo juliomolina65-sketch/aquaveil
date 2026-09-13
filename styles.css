@@ -1235,3 +1235,145 @@ body.is-checkout .stickybar{display:none !important}
   .payform__title{font-size:22px; margin-bottom:10px}
   .payform__foot{font-size:12px}
 }
+
+/* =============================================================================
+   Hero v2 — offer pill, accent headline, price row, chips, floating review
+   ============================================================================= */
+.banner__media{position:absolute; inset:0; z-index:-2}
+.banner__bg--mobile{display:none}
+.hero-copy{max-width:600px}
+.hero-copy > *{animation:heroIn .7s cubic-bezier(.2,.7,.2,1) both}
+.hero-copy > *:nth-child(1){animation-delay:.05s}
+.hero-copy > *:nth-child(2){animation-delay:.12s}
+.hero-copy > *:nth-child(3){animation-delay:.18s}
+.hero-copy > *:nth-child(4){animation-delay:.24s}
+.hero-copy > *:nth-child(5){animation-delay:.30s}
+.hero-copy > *:nth-child(6){animation-delay:.36s}
+.hero-copy > *:nth-child(7){animation-delay:.42s}
+.hero-copy > *:nth-child(8){animation-delay:.48s}
+@keyframes heroIn{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+@media (prefers-reduced-motion:reduce){ .hero-copy > *{animation:none} }
+
+.offer-pill{
+  display:inline-flex; align-items:center; gap:8px; margin-bottom:18px;
+  padding:8px 14px 8px 11px; border-radius:100px;
+  background:rgba(220,184,127,.14); border:1px solid rgba(220,184,127,.5);
+  color:#f3e3c5; font-size:13px; font-weight:600; letter-spacing:.01em;
+  backdrop-filter:blur(6px);
+}
+.offer-pill .ico{width:16px; height:16px; color:var(--hero-accent, #dcb87f)}
+.offer-pill[hidden]{display:none}
+
+.banner__title em{font-style:italic; color:var(--hero-accent, #dcb87f); font-weight:400}
+
+.banner__price{
+  display:flex; align-items:baseline; flex-wrap:wrap; gap:6px 12px; margin:-6px 0 22px;
+  color:rgba(247,241,232,.8); font-size:14px;
+}
+.banner__price strong{font-family:var(--serif); font-size:34px; line-height:1; color:#fff; letter-spacing:-.01em}
+.banner__price s{font-size:16px; color:rgba(247,241,232,.55)}
+.banner__price-note{padding-left:12px; border-left:1px solid rgba(247,241,232,.25)}
+
+.hero-chips{list-style:none; padding:0; margin:22px 0 0; display:flex; flex-wrap:wrap; gap:8px 22px}
+.hero-chips li{display:flex; align-items:center; gap:7px; font-size:13px; color:rgba(247,241,232,.82)}
+.hero-chips .ico{width:16px; height:16px; color:var(--hero-accent, #dcb87f)}
+
+.hero-card{
+  position:absolute; right:clamp(24px,4vw,64px); bottom:clamp(24px,4vw,56px); z-index:2;
+  width:250px; padding:14px 16px; border-radius:16px; text-decoration:none;
+  background:rgba(12,32,36,.62); border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(12px); color:#f4fbfc; box-shadow:0 20px 50px rgba(0,0,0,.35);
+  animation:heroIn .8s .55s cubic-bezier(.2,.7,.2,1) both;
+  transition:transform .2s ease, background .2s ease;
+}
+.hero-card:hover{transform:translateY(-3px); background:rgba(12,32,36,.75)}
+.hero-card[hidden]{display:none}
+.hero-card__stars{display:block; color:var(--hero-accent, #dcb87f); letter-spacing:3px; font-size:13px; margin-bottom:8px}
+.hero-card__quote{margin:0 0 8px; font-family:var(--serif); font-size:15.5px; line-height:1.35; color:#fff}
+.hero-card__by{font-size:12px; color:rgba(247,241,232,.7)}
+@media (max-width:1100px){ .hero-card{display:none} }
+
+/* Phones: square product shot on top, fading into the dark text panel ---------- */
+@media (max-width:860px){
+  .banner--hero{display:block; aspect-ratio:auto; min-height:0; background:var(--ink)}
+  .banner__media{position:relative; inset:auto; z-index:0; display:block; aspect-ratio:1; overflow:hidden}
+  .banner--hero .banner__bg{display:none}
+  .banner--hero .banner__bg--mobile{
+    display:block; position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover; object-position:center; aspect-ratio:auto;
+  }
+  .banner--hero .banner__scrim{
+    display:block; position:absolute; inset:0; z-index:1;
+    background:linear-gradient(180deg, rgba(20,20,15,0) 45%, rgba(20,20,15,.55) 75%, var(--ink) 100%);
+  }
+  .banner--hero .banner__in{
+    position:relative; z-index:1; margin-top:-96px; background:transparent;
+    padding:0 24px 34px; max-width:none;
+  }
+  .hero-copy{max-width:none}
+  .offer-pill{margin-bottom:14px; font-size:12.5px}
+  .banner--hero .banner__title{max-width:none; font-size:clamp(30px,8.2vw,42px)}
+  .banner--hero .banner__lede{max-width:none; font-size:15.5px; margin-bottom:18px}
+  .banner__price{margin:0 0 18px}
+  .banner__price strong{font-size:30px}
+  .banner__price-note{flex-basis:100%; padding-left:0; border-left:0}
+  .banner--hero .banner__actions .btn{flex:1 1 100%}
+  .hero-chips{gap:8px 16px; margin-top:18px}
+  .hero-chips li{font-size:12.5px}
+}
+
+/* =============================================================================
+   Mobile carousel for the "Fix the water" benefit cards
+   Six stacked photo cards were a six-screen scroll on phones. Under 860px the
+   grid becomes a swipeable row, one card per screen, with dots beneath.
+   ============================================================================= */
+.carousel-dots{display:none}
+@media (max-width:860px){
+  .benefits--3{
+    display:flex; grid-template-columns:none; gap:14px;
+    overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+    scroll-padding:0 24px; padding:4px 24px 8px; margin:0 -24px;
+    scrollbar-width:none;
+  }
+  .benefits--3::-webkit-scrollbar{display:none}
+  .benefits--3 > .bcard{flex:0 0 84%; scroll-snap-align:center; margin:0}
+  /* Cards are visible immediately in the row — no staggered fade that leaves
+     off-screen cards blank while the user swipes. */
+  .js-reveal .benefits--3 > .reveal{opacity:1; transform:none}
+  .bcard--img .bcard__body{padding:18px 18px 20px}
+  .carousel-dots{display:flex; justify-content:center; gap:7px; margin-top:16px}
+  .carousel-dots button{width:8px; height:8px; padding:0; border:0; border-radius:50%; background:var(--line); transition:background .2s, transform .2s}
+  .carousel-dots button.is-on{background:var(--accent); transform:scale(1.25)}
+  .carousel-hint{display:block; text-align:center; font-size:12.5px; color:var(--ink-3); margin-top:8px}
+}
+@media (min-width:861px){ .carousel-hint{display:none} }
+
+/* =============================================================================
+   Promotion — hot pill, buy-box banner, sold counter
+   ============================================================================= */
+.offer-pill--hot{
+  background:linear-gradient(90deg, rgba(220,184,127,.28), rgba(220,184,127,.12));
+  border-color:rgba(220,184,127,.85); color:#fff;
+  box-shadow:0 0 0 0 rgba(220,184,127,.45); animation:pillPulse 2.4s ease-out infinite;
+}
+@keyframes pillPulse{0%{box-shadow:0 0 0 0 rgba(220,184,127,.45)} 70%{box-shadow:0 0 0 10px rgba(220,184,127,0)} 100%{box-shadow:0 0 0 0 rgba(220,184,127,0)}}
+@media (prefers-reduced-motion:reduce){ .offer-pill--hot{animation:none} }
+.banner__sold{
+  margin-left:4px; padding:3px 9px; border-radius:100px; font-size:12px; font-weight:600;
+  background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22); color:#fff;
+}
+@media (max-width:860px){ .banner__rating{flex-wrap:wrap; row-gap:8px} .banner__sold{flex-basis:100%; width:max-content; margin:0} }
+
+.promo-pill{
+  display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:6px 12px;
+  margin:0 0 14px; padding:11px 14px; border-radius:12px;
+  background:color-mix(in srgb, var(--accent) 9%, var(--surface));
+  border:1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  font-size:13.5px; color:var(--ink-2);
+}
+.promo-pill strong{color:var(--accent); font-size:14.5px; white-space:nowrap}
+.promo-pill em{font-style:normal; font-weight:600; color:var(--ink); white-space:nowrap; font-variant-numeric:tabular-nums}
+@media (max-width:560px){
+  .promo-pill{grid-template-columns:1fr auto}
+  .promo-pill span{grid-column:1 / -1; order:3; font-size:13px}
+}

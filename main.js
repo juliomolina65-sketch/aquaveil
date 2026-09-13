@@ -144,11 +144,11 @@
   var emblemHTML = function (idp) {
     return (
       '<a class="emblem" href="#reviews" aria-label="Rated ' + Number(P.rating).toFixed(1) +
-      " out of 5 from " + P.reviewCount.toLocaleString() + ' reviews">' +
+      ' out of 5">' +
       starsSVG(P.rating, idp) +
       '<span class="emblem__score">' + Number(P.rating).toFixed(1) + "</span>" +
       '<span class="emblem__sep" aria-hidden="true"></span>' +
-      '<span class="emblem__count">' + fmtCount(P.reviewCount) + " reviews</span></a>"
+      '<span class="emblem__count">out of 5</span></a>'
     );
   };
   var hasRating = P.rating != null && P.reviewCount > 0;
@@ -168,6 +168,20 @@
 
   setAll("data-product-name", P.name);
   $("[data-product-pitch]").textContent = P.pitch;
+
+  (function () {
+    var PR = window.PROMO || {};
+    var priceEl = $(".price");
+    if (!PR.active || !priceEl) return;
+    var pill = el("div", "promo-pill");
+    var paint = function () {
+      pill.innerHTML = "<strong>" + esc(PR.config.headline) + "</strong>" +
+        "<span>" + esc(PR.config.detail || "") + "</span>" +
+        '<em>Ends in ' + PR.remaining() + "</em>";
+    };
+    paint(); setInterval(paint, 30000);
+    priceEl.insertAdjacentElement("beforebegin", pill);
+  })();
 
   $("[data-price-now]").textContent = money(P.price);
   if (P.compareAt && P.compareAt > P.price) {
@@ -852,7 +866,7 @@
         return fetch("/api/checkout-session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ quantity: qty, finish: finish }),
+          body: JSON.stringify({ quantity: qty, finish: finish, bogo: !!(window.PROMO && window.PROMO.active) }),
         })
           .then(function (r) { return r.json(); })
           .then(function (data) {

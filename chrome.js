@@ -15,6 +15,37 @@
     });
   };
 
+  /* --------------------------------------------------------------- promo --- */
+  // Shared promo state for every page: window.PROMO.active / remaining().
+  (function () {
+    var p = S.promo || {};
+    var end = p.enabled && p.ends ? new Date(p.ends).getTime() : 0;
+    var active = end > Date.now();
+    var remaining = function () {
+      var ms = Math.max(0, end - Date.now());
+      var d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+      return d > 0 ? d + "d " + h + "h" : h > 0 ? h + "h " + m + "m" : m + "m";
+    };
+    window.PROMO = { active: active, remaining: remaining, config: p };
+    if (!active) return;
+
+    // Announcement bar: promo line first, refreshed as the clock runs down.
+    S.announcements = S.announcements || [];
+    var line = function () {
+      return p.headline + " — ends in " + remaining() +
+        (p.soldThisMonth ? " · " + p.soldThisMonth + "+ sold this month" : "");
+    };
+    S.announcements.unshift(line());
+    setInterval(function () { S.announcements[0] = line(); }, 30000);
+
+    // Value stack: the free second unit, right under the paid one.
+    var P = S.product;
+    if (S.valueStack && S.valueStack.items && p.bonusLabel) {
+      S.valueStack.items.splice(1, 0, { label: p.bonusLabel, was: P.price, free: true });
+      S.valueStack.totalWas = Math.round((S.valueStack.totalWas + P.price) * 100) / 100;
+    }
+  })();
+
   /* --------------------------------------------------------------- theme --- */
   document.documentElement.style.setProperty("--accent", S.brand.accent);
   document.documentElement.style.setProperty("--accent-dark", S.brand.accentDark);

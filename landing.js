@@ -22,11 +22,69 @@
 
   /* ----------------------------------------------------------------- hero -- */
   $("[data-l-eyebrow]").textContent = L.heroEyebrow || "";
-  $("[data-l-title]").textContent = L.heroTitle || P.name;
+  // Headline: plain part, then an accented sentence in italic gold.
+  $("[data-l-title]").innerHTML =
+    esc(L.heroTitle || P.name) +
+    (L.heroTitleAccent ? " <em>" + esc(L.heroTitleAccent) + "</em>" : "");
   $("[data-l-body]").textContent = L.heroBody || P.pitch;
   $("[data-l-cta]").textContent = L.heroCta || "Shop now";
   $("[data-l-image]").src = L.heroImage || P.gallery[0].src;
   $("[data-l-image]").alt = L.heroTitle || P.name;
+  // Portrait/square shot for phones, where the wide banner would be a sliver.
+  var mob = $("[data-l-image-mobile]");
+  if (mob) { mob.src = L.heroImageMobile || L.heroImage || P.gallery[0].src; mob.alt = P.name; }
+
+  // Offer pill (what's included / savings). Hidden when not configured.
+  (function () {
+    var pill = $("[data-l-offer]");
+    if (!pill) return;
+    var PR = window.PROMO || {};
+    if (PR.active) {
+      var t = $("[data-l-offer-text]");
+      var paint = function () { t.textContent = PR.config.headline + " · ends in " + PR.remaining(); };
+      paint(); setInterval(paint, 30000);
+      pill.classList.add("offer-pill--hot");
+      pill.hidden = false;
+      return;
+    }
+    if (!L.heroOffer) { pill.remove(); return; }
+    $("[data-l-offer-text]").textContent = L.heroOffer;
+    pill.hidden = false;
+  })();
+
+  // Price row: real price from product config, never typed twice.
+  (function () {
+    var row = $("[data-l-price-row]");
+    if (!row) return;
+    $("[data-l-price-now]").textContent = money(P.price);
+    var was = $("[data-l-price-was]");
+    if (P.compareAt && P.compareAt > P.price) was.textContent = money(P.compareAt); else was.remove();
+    $("[data-l-price-note]").textContent = L.heroPriceNote || "";
+  })();
+
+  // Trust chips under the buttons.
+  (function () {
+    var host = $("[data-l-chips]");
+    if (!host) return;
+    var chips = L.heroChips || [];
+    if (!chips.length) { host.remove(); return; }
+    host.innerHTML = chips.map(function (c) {
+      return '<li><svg class="ico"><use href="#i-shield"/></svg>' + esc(c) + "</li>";
+    }).join("");
+  })();
+
+  // Floating review card: first review flagged `hero: true`, else the first one.
+  (function () {
+    var card = $("[data-l-hero-review]");
+    if (!card) return;
+    var list = S.reviews || [];
+    var r = list.filter(function (x) { return x.hero; })[0] || list[0];
+    if (!r) { card.remove(); return; }
+    var q = r.body.length > 110 ? r.body.slice(0, 107).replace(/\s+\S*$/, "") + "…" : r.body;
+    $("[data-l-hero-review-quote]").textContent = "\u201C" + q + "\u201D";
+    $("[data-l-hero-review-by]").textContent = r.name + (r.location ? " · " + r.location : "") + (r.verified ? " · Verified" : "");
+    card.hidden = false;
+  })();
 
   // Star line above the headline — the first thing the competitor shows.
   // Renders ONLY from real numbers in product.rating / reviewCount. Until
@@ -40,7 +98,9 @@
     host.innerHTML =
       '<span class="banner__stars">' +
         "★★★★★".slice(0, full) + "☆☆☆☆☆".slice(0, 5 - full) +
-      "</span><span>Rated " + P.rating + " by " + P.reviewCount.toLocaleString() + "+ customers</span>";
+      "</span><span>Rated " + P.rating + " out of 5</span>" +
+      ((window.PROMO && window.PROMO.active && window.PROMO.config.soldThisMonth)
+        ? '<span class="banner__sold">' + window.PROMO.config.soldThisMonth + "+ sold this month</span>" : "");
     host.hidden = false;
   })();
 
@@ -130,6 +190,38 @@
     })
     .join("");
 
+  /* ------------------------------------------------- mobile carousel dots -- */
+  (function () {
+    var track = $("[data-l-pillars]");
+    if (!track || !track.children.length) return;
+    var dots = document.createElement("div");
+    dots.className = "carousel-dots";
+    dots.setAttribute("aria-hidden", "true");
+    var cards = Array.prototype.slice.call(track.children);
+    cards.forEach(function (c, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      if (i === 0) b.className = "is-on";
+      b.addEventListener("click", function () { c.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" }); });
+      dots.appendChild(b);
+    });
+    var hint = document.createElement("span");
+    hint.className = "carousel-hint";
+    hint.textContent = "Swipe to see all " + cards.length;
+    track.insertAdjacentElement("afterend", dots);
+    dots.insertAdjacentElement("afterend", hint);
+    var update = function () {
+      var mid = track.scrollLeft + track.clientWidth / 2;
+      var best = 0, bestD = Infinity;
+      cards.forEach(function (c, i) {
+        var d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      Array.prototype.forEach.call(dots.children, function (b, i) { b.classList.toggle("is-on", i === best); });
+    };
+    track.addEventListener("scroll", function () { window.requestAnimationFrame(update); }, { passive: true });
+  })();
+
   /* ------------------------------------------------------------- featured -- */
   (function () {
     var vs = S.valueStack;
@@ -197,7 +289,7 @@
     if (P.rating != null && P.reviewCount) {
       big.innerHTML =
         '<span class="rating__stars">' + starsTxt(P.rating) + "</span>" +
-        "<span><strong>" + Number(P.rating).toFixed(1) + "</strong> from " + P.reviewCount + " reviews</span>";
+        "<span><strong>" + Number(P.rating).toFixed(1) + "</strong> out of 5</span>";
     } else {
       big.remove();
     }
@@ -220,7 +312,7 @@
 
     var more = $("[data-l-more-reviews]");
     if (list.length > SHOW) {
-      more.textContent = "Read all " + list.length + " reviews";
+      more.textContent = "Read more reviews";
       more.hidden = false;
     }
     if (window.rescanReveals) window.rescanReveals();
