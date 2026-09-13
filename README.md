@@ -12,7 +12,7 @@ Then open <http://localhost:8080/>. (Add `-Port 3000` to change the port.)
 
 ## Where the content lives
 
-**Everything is in one file: [`assets/js/product.js`](assets/js/product.js).**
+**Everything is in one file: [`product.js`](product.js).**
 Copy, prices, photos, variants, bundles, reviews, FAQ — all of it. Edit that file
 and reload; you never need to touch the HTML.
 
@@ -36,17 +36,17 @@ and reload; you never need to touch the HTML.
 
 ## Adding your photos
 
-Drop files into `assets/img/`, then point at them:
+Drop files into ``, then point at them:
 
 ```js
 gallery: [
-  { src: "assets/img/hero.jpg",   alt: "Product, front" },
-  { src: "assets/img/in-use.jpg", alt: "Product in use" },
+  { src: "hero.jpg",   alt: "Product, front" },
+  { src: "in-use.jpg", alt: "Product in use" },
 ],
 ```
 
 Square images (1:1) work best in the gallery; the feature/lifestyle slots are 4:3.
-The `.svg` files currently in `assets/img/` are placeholders — delete them once
+The `.svg` files currently in `` are placeholders — delete them once
 your real photos are in.
 
 ## Page structure
