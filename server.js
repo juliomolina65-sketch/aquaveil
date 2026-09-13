@@ -55,6 +55,8 @@ const TYPES = {
   ".avif": "image/avif",
   ".ico": "image/x-icon",
   ".woff2": "font/woff2",
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
 };
 
 // Friendly path -> real file

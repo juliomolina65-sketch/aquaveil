@@ -1377,3 +1377,53 @@ body.is-checkout .stickybar{display:none !important}
   .promo-pill{grid-template-columns:1fr auto}
   .promo-pill span{grid-column:1 / -1; order:3; font-size:13px}
 }
+
+/* =============================================================================
+   Customer video strip
+   ============================================================================= */
+.vgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px}
+.vtile{
+  position:relative; margin:0; aspect-ratio:9/16; border-radius:var(--radius-lg); overflow:hidden;
+  background:#0e1d20; box-shadow:var(--shadow-sm); cursor:pointer; isolation:isolate;
+}
+.vtile__video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block}
+.vtile::after{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%);
+}
+.vtile__sound{
+  position:absolute; top:12px; left:12px; z-index:2; display:inline-flex; align-items:center; gap:7px;
+  padding:7px 11px 7px 9px; border:1px solid rgba(255,255,255,.28); border-radius:100px;
+  background:rgba(10,20,22,.55); color:#fff; font:inherit; font-size:12.5px; font-weight:600;
+  backdrop-filter:blur(8px); cursor:pointer; transition:background .2s;
+}
+.vtile__sound:hover{background:rgba(10,20,22,.75)}
+.vtile__sound svg{width:16px; height:16px}
+.vtile__ico-on{display:none}
+.vtile.is-sound .vtile__ico-on{display:block}
+.vtile.is-sound .vtile__ico-mute{display:none}
+.vtile.is-sound .vtile__sound{background:var(--accent); border-color:var(--accent)}
+.vtile figcaption{
+  position:absolute; left:14px; right:14px; bottom:12px; z-index:2;
+  color:#fff; font-size:13.5px; font-weight:600; letter-spacing:-.01em; text-shadow:0 1px 8px rgba(0,0,0,.5);
+}
+.vtile.is-sound{box-shadow:0 0 0 3px var(--accent), var(--shadow-md)}
+@media (max-width:1024px){ .vgrid{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:860px){
+  .vgrid{
+    display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory;
+    padding:4px 24px 8px; margin:0 -24px; scrollbar-width:none; -webkit-overflow-scrolling:touch;
+  }
+  .vgrid::-webkit-scrollbar{display:none}
+  .vgrid > .vtile{flex:0 0 68%; scroll-snap-align:center}
+  .js-reveal .vgrid > .reveal{opacity:1; transform:none}
+}
+
+/* Fallback when a phone refuses muted autoplay: big play button on the poster */
+.vtile.needs-tap::before{
+  content:""; position:absolute; left:50%; top:50%; z-index:2; width:64px; height:64px;
+  transform:translate(-50%,-50%); border-radius:50%; background:rgba(255,255,255,.92);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z' fill='%2314727f'/%3E%3C/svg%3E");
+  background-size:30px; background-position:56% center; background-repeat:no-repeat;
+  box-shadow:0 8px 24px rgba(0,0,0,.35); pointer-events:none;
+}

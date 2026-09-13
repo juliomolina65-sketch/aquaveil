@@ -65,6 +65,19 @@ window.STORE = {
     bonusLabel: "Second Aquaveil Showerhead",
   },
 
+  /* --- Customer videos ------------------------------------------------------ *
+   * Vertical phone clips shown in a "Real showers" strip on the homepage.
+   * Drop the .mp4 and a poster .jpg in the store folder, add a line here.
+   * `caption` is what shows under the tile. Only use clips you have the
+   * customer's permission to publish.
+   * ----------------------------------------------------------------------- */
+  customerVideos: [
+    { src: "customer-4.mp4", poster: "customer-4.jpg", caption: "The scalp massager, up close" },
+    { src: "customer-2.mp4", poster: "customer-2.jpg", caption: "Why filter your shower water" },
+    { src: "customer-1.mp4", poster: "customer-1.jpg", caption: "Jet mode on a tiled shower" },
+    { src: "customer-3.mp4", poster: "customer-3.jpg", caption: "Rinse mode, full pressure" },
+  ],
+
   /* --- Site navigation ---------------------------------------------------- *
    * Used by chrome.js to build the header and footer on EVERY page, so nav
    * lives in exactly one place.

@@ -271,6 +271,68 @@
   })();
 
 
+  /* ------------------------------------------------------ customer videos -- */
+  (function () {
+    var host = $("[data-l-videos]");
+    if (!host) return;
+    var list = S.customerVideos || [];
+    if (!list.length) { host.closest("section").remove(); return; }
+
+    host.innerHTML = list.map(function (v, i) {
+      return (
+        '<figure class="vtile reveal" data-vtile>' +
+          '<video class="vtile__video" playsinline webkit-playsinline muted autoplay loop preload="metadata" poster="' + esc(v.poster) + '">' +
+            '<source src="' + esc(v.src) + '" type="video/mp4" />' +
+          "</video>" +
+          '<button class="vtile__sound" type="button" aria-label="Play with sound">' +
+            '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="vtile__ico-mute" d="M4 9v6h4l5 4V5L8 9H4zm12.5 3 3-3m0 6-3-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path class="vtile__ico-on" d="M4 9v6h4l5 4V5L8 9H4zm11 1a4 4 0 0 1 0 4m2.5-7a8 8 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+            "<span>Tap for sound</span>" +
+          "</button>" +
+          (v.caption ? "<figcaption>" + esc(v.caption) + "</figcaption>" : "") +
+        "</figure>"
+      );
+    }).join("");
+
+    var tiles = Array.prototype.slice.call(host.querySelectorAll("[data-vtile]"));
+    var videos = tiles.map(function (t) { return t.querySelector("video"); });
+
+    // Autoplay muted previews only while on screen (saves data, keeps it calm).
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var v = e.target;
+          if (e.isIntersecting) {
+            // If the phone blocks autoplay (iOS Low Power Mode does), show a
+            // play button so the tile never looks like a broken image.
+            var p = v.play();
+            if (p && p.catch) p.catch(function () { v.closest("[data-vtile]").classList.add("needs-tap"); });
+          } else if (v.muted) { v.pause(); }
+        });
+      }, { threshold: 0.4 });
+      videos.forEach(function (v) { io.observe(v); });
+    }
+
+    // Tap = sound on for that clip, everything else back to muted preview.
+    var setSound = function (tile, on) {
+      var v = tile.querySelector("video");
+      var b = tile.querySelector(".vtile__sound");
+      v.muted = !on;
+      tile.classList.toggle("is-sound", on);
+      b.setAttribute("aria-label", on ? "Mute" : "Play with sound");
+      b.querySelector("span").textContent = on ? "Sound on" : "Tap for sound";
+      tile.classList.remove("needs-tap");
+      if (on) { v.currentTime = 0; v.play().catch(function () {}); }
+    };
+    tiles.forEach(function (tile) {
+      tile.addEventListener("click", function () {
+        var on = !tile.classList.contains("is-sound");
+        tiles.forEach(function (o) { if (o !== tile) setSound(o, false); });
+        setSound(tile, on);
+      });
+    });
+    if (window.rescanReveals) window.rescanReveals();
+  })();
+
   /* -------------------------------------------------------------- reviews -- */
   (function () {
     var host = $("[data-l-reviews]");
