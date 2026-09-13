@@ -1,0 +1,11 @@
+# Clean URLs for static hosts (Netlify / Cloudflare Pages).
+# Railway uses server.js instead and ignores this file.
+/b/*        /b.html   200
+/bueno/signup     /signup.html   200
+/bueno/partners   /rescue-partners.html   200
+/bueno/report     /report.html   200
+/bueno/demo       /rescue-demo.html   200
+/bueno      /rescue-pitch.html   200
+
+# NOTE: embedded checkout needs server.js (Railway). On a static host the
+# site falls back to the hosted Stripe payment link automatically.

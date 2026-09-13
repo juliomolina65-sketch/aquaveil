@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Loading…</title>
+<meta name="description" content="" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+
+<!-- ── Announcement bar ─────────────────────────────────────────────── -->
+<div data-site-announce></div>
+<header data-site-header></header>
+
+<main id="top">
+
+  <!-- ── Hero / product ─────────────────────────────────────────────── -->
+  <section class="hero" id="buy">
+    <div class="wrap hero__grid">
+
+      <!-- Gallery -->
+      <div class="gallery">
+        <div class="gallery__stage">
+          <img class="gallery__main" id="galleryMain" alt="" />
+          <button class="gallery__arrow gallery__arrow--prev" data-gallery-prev aria-label="Previous image">‹</button>
+          <button class="gallery__arrow gallery__arrow--next" data-gallery-next aria-label="Next image">›</button>
+          <span class="badge-save" data-save-badge hidden></span>
+        </div>
+        <div class="gallery__thumbs" id="galleryThumbs"></div>
+      </div>
+
+      <!-- Buy box -->
+      <div class="buybox">
+
+        <h1 class="buybox__title" data-product-name>&nbsp;</h1>
+        <p class="buybox__pitch" data-product-pitch></p>
+        <div class="rating" data-rating></div>
+
+        <div class="price">
+          <span class="price__now" data-price-now></span>
+          <span class="price__was" data-price-was></span>
+          <span class="price__off" data-price-off></span>
+        </div>
+
+        <ul class="highlights" data-highlights></ul>
+
+        <div class="variants" data-variants></div>
+
+        <div class="bundles">
+          <div class="bundles__label">Choose your quantity</div>
+          <div class="bundles__list" data-bundles></div>
+        </div>
+
+        <div class="stack" data-value-stack></div>
+
+        <label class="sub" data-subscription hidden>
+          <input type="checkbox" class="sub__box" data-sub-toggle />
+          <span class="sub__body">
+            <span class="sub__title" data-sub-label></span>
+            <span class="sub__sub" data-sub-sublabel></span>
+            <span class="sub__note" data-sub-note></span>
+          </span>
+          <span class="sub__price" data-sub-price></span>
+        </label>
+
+        <div class="shipby" data-shipby hidden>
+          <svg class="ico"><use href="#i-truck"/></svg>
+          <span><span data-shipby-label></span> <strong data-shipby-date></strong></span>
+        </div>
+
+        <button class="btn btn--primary btn--block btn--lg" data-add-to-cart>
+          <span>Add to cart —</span> <span data-cart-total></span>
+        </button>
+
+        <div class="stock">
+          <span class="stock__dot"></span>
+          <span data-stock></span>
+        </div>
+
+        <div class="trust-row">
+          <div class="trust-row__item"><svg class="ico"><use href="#i-truck"/></svg> Free shipping</div>
+          <div class="trust-row__item"><svg class="ico"><use href="#i-refresh"/></svg> 40-day returns</div>
+          <div class="trust-row__item"><svg class="ico"><use href="#i-shield"/></svg> Fits any shower</div>
+        </div>
+
+        <div class="pay">
+          <span>Secure checkout</span>
+          <div class="pay__marks" data-pay-marks></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Press logos ────────────────────────────────────────────────── -->
+  <section class="press"><div class="wrap press__in" data-press></div></section>
+
+  <!-- ── Benefits ───────────────────────────────────────────────────── -->
+  <section class="section" id="benefits">
+    <div class="wrap">
+      <div class="section__head reveal">
+        <span class="eyebrow">Why it works</span>
+        <h2 class="h2">Fix the water, fix the hair</h2>
+      </div>
+      <div class="benefits" data-benefits></div>
+    </div>
+  </section>
+
+  <!-- ── Problem ────────────────────────────────────────────────────── -->
+  <section class="section section--tint">
+    <div class="wrap split reveal">
+      <div class="split__media"><img data-problem-img alt="" /></div>
+      <div class="split__body">
+        <span class="eyebrow" data-problem-eyebrow></span>
+        <h2 class="h2" data-problem-title></h2>
+        <p class="lede" data-problem-body></p>
+        <ul class="ticks" data-problem-points></ul>
+        <button class="btn btn--primary" data-scroll-to="#buy">Get yours</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How it works ───────────────────────────────────────────────── -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section__head reveal">
+        <span class="eyebrow">How it works</span>
+        <h2 class="h2">Three steps. That's it.</h2>
+      </div>
+      <div class="steps" data-steps></div>
+    </div>
+  </section>
+
+  <!-- ── Spray modes ────────────────────────────────────────────────── -->
+  <section class="section section--tint" id="modes">
+    <div class="wrap">
+      <div class="section__head reveal">
+        <span class="eyebrow">Four settings</span>
+        <h2 class="h2">One head, four kinds of shower</h2>
+      </div>
+      <div class="modes" data-modes></div>
+    </div>
+  </section>
+
+  <!-- ── Feature board (supplied graphic, shown whole) ──────────────── -->
+  <section class="section" id="details" data-feature-board hidden>
+    <div class="wrap">
+      <div class="section__head reveal">
+        <span class="eyebrow" data-fb-eyebrow></span>
+        <h2 class="h2" data-fb-title></h2>
+      </div>
+      <figure class="fboard reveal"><img data-fb-img alt="" /></figure>
+    </div>
+  </section>
+
+  <!-- ── Feature deep-dives ─────────────────────────────────────────── -->
+  <section class="section section--tight" data-features></section>
+
+  <!-- ── What's in your water ───────────────────────────────────────── -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section__head reveal">
+        <span class="eyebrow">The water itself</span>
+        <h2 class="h2" data-contam-title></h2>
+        <p class="lede" data-contam-intro></p>
+      </div>
+      <div class="contam" data-contam></div>
+    </div>
+  </section>
+
+  <!-- ── The honest filter block ────────────────────────────────────── -->
+  <section class="section section--tint" id="filters">
+    <div class="wrap split split--flip reveal">
+      <div class="split__media"><img data-filter-img alt="" /></div>
+      <div class="split__body">
+        <span class="eyebrow" data-filter-eyebrow></span>
+        <h2 class="h2" data-filter-title></h2>
+        <p class="lede" data-filter-body></p>
+        <ul class="ticks" data-filter-points></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Comparison ─────────────────────────────────────────────────── -->
+  <section class="section section--tint">
+    <div class="wrap">
+      <div class="section__head reveal">
+        <span class="eyebrow">The comparison</span>
+        <h2 class="h2" data-compare-title></h2>
+      </div>
+      <div class="compare reveal" data-compare></div>
+    </div>
+  </section>
+
+  <!-- ── Cartridge proof ────────────────────────────────────────────── -->
+  <section class="section" id="proof">
+    <div class="wrap">
+      <div class="section__head reveal">
+        <span class="eyebrow" data-proof-eyebrow></span>
+        <h2 class="h2" data-proof-title></h2>
+        <p class="lede" data-proof-body></p>
+      </div>
+      <div class="proof reveal">
+        <figure class="proof__side">
+          <img data-proof-before-img alt="" />
+          <figcaption data-proof-before-label></figcaption>
+        </figure>
+        <div class="proof__vs">→</div>
+        <figure class="proof__side">
+          <img data-proof-after-img alt="" />
+          <figcaption data-proof-after-label></figcaption>
+        </figure>
+      </div>
+      <p class="proof__note" data-proof-note></p>
+    </div>
+  </section>
+
+  <!-- ── Reviews ────────────────────────────────────────────────────── -->
+  <section class="section" id="reviews">
+    <div class="wrap">
+      <div class="section__head reveal">
+        <span class="eyebrow">Reviews</span>
+        <h2 class="h2">What's your hair actually doing?</h2>
+        <div class="rating rating--lg" data-rating-big></div>
+      </div>
+      <div class="revfilter" data-review-filter></div>
+      <div class="reviews" data-reviews></div>
+    </div>
+  </section>
+
+  <!-- ── Guarantee ──────────────────────────────────────────────────── -->
+  <section class="section" id="guarantee">
+    <div class="wrap">
+      <div class="guarantee reveal">
+        <div class="guarantee__seal"><svg class="ico ico--xl"><use href="#i-shield"/></svg><span>40<small>days</small></span></div>
+        <div>
+          <h2 class="h3" data-guarantee-title></h2>
+          <p class="lede" data-guarantee-body></p>
+          <p class="sig" data-guarantee-sig></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ────────────────────────────────────────────────────────── -->
+  <section class="section section--tint" id="faq">
+    <div class="wrap wrap--narrow">
+      <div class="section__head reveal">
+        <span class="eyebrow">FAQ</span>
+        <h2 class="h2">Questions, answered</h2>
+      </div>
+      <div class="faq" data-faq></div>
+    </div>
+  </section>
+
+  <!-- ── Final CTA ──────────────────────────────────────────────────── -->
+  <section class="finalcta">
+    <div class="wrap wrap--narrow finalcta__in reveal">
+      <h2 class="h2" data-final-title></h2>
+      <p class="lede" data-final-body></p>
+      <button class="btn btn--light btn--lg" data-scroll-to="#buy">Buy now — <span data-final-price></span></button>
+      <div class="finalcta__note">Free shipping · 40-day refund · No subscription</div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Footer ───────────────────────────────────────────────────────── -->
+<footer data-site-footer></footer>
+
+<!-- ── Sticky mobile buy bar ────────────────────────────────────────── -->
+<div class="stickybar" id="stickybar">
+  <div class="stickybar__info">
+    <img data-sticky-img alt="" />
+    <div>
+      <div class="stickybar__name" data-product-name></div>
+      <div class="stickybar__price" data-cart-total></div>
+    </div>
+  </div>
+  <button class="btn btn--primary" data-add-to-cart>Add to cart</button>
+</div>
+
+<!-- ── Cart drawer ──────────────────────────────────────────────────── -->
+<div class="scrim" data-close-cart></div>
+<aside class="cart" id="cart" aria-hidden="true">
+  <div class="cart__head">
+    <strong>Your cart</strong>
+    <button class="iconbtn" data-close-cart aria-label="Close cart">✕</button>
+  </div>
+  <div class="cart__body" data-cart-body></div>
+  <div class="cart__foot">
+    <div class="cart__row"><span>Subtotal</span><strong data-cart-total></strong></div>
+    <div class="cart__row cart__row--muted"><span>Shipping</span><span>Free</span></div>
+    <button class="btn btn--primary btn--block btn--lg" data-checkout>Checkout</button>
+    <p class="cart__note" data-cart-note>Payments not connected yet — this is the foundation build.</p>
+  </div>
+</aside>
+
+<!-- ── Embedded checkout ────────────────────────────────────────────── -->
+<div class="checkout" id="checkoutPanel" hidden>
+  <div class="checkout__head">
+    <div class="wrap checkout__head-in">
+      <button class="btn btn--ghost btn--sm checkout__back" type="button" data-close-checkout aria-label="Back to cart">‹<span> Back to cart</span></button>
+      <span class="logo" data-checkout-brand></span>
+      <span class="checkout__secure"><svg class="ico"><use href="#i-shield"/></svg><span> Secure checkout</span></span>
+    </div>
+  </div>
+
+  <div class="wrap checkout__grid">
+
+    <!-- Order summary (ours) -->
+    <aside class="summary">
+      <div class="summary__hero">
+        <img data-summary-img alt="" />
+      </div>
+      <div class="summary__row">
+        <img class="summary__thumb" data-summary-img alt="" />
+        <div class="summary__row-text">
+          <h2 class="summary__name" data-summary-name></h2>
+          <p class="summary__meta" data-summary-meta></p>
+        </div>
+        <div class="summary__price" data-summary-price></div>
+      </div>
+
+      <button class="summary__toggle" type="button" data-summary-toggle aria-expanded="false">
+        <span>Order details</span>
+        <span class="summary__toggle-total">Total <strong data-summary-total></strong> <i>⌄</i></span>
+      </button>
+
+      <div class="summary__details" data-summary-details>
+      <ul class="summary__list" data-summary-list></ul>
+
+      <div class="summary__totals">
+        <div><span>Subtotal</span><strong data-summary-subtotal></strong></div>
+        <div><span>Shipping</span><strong>Free</strong></div>
+        <div class="summary__grand"><span>Total</span><strong data-summary-total></strong></div>
+      </div>
+
+      <div class="summary__trust">
+        <div><svg class="ico"><use href="#i-truck"/></svg> Ships within 24h</div>
+        <div><svg class="ico"><use href="#i-refresh"/></svg> 40-day money back</div>
+        <div><svg class="ico"><use href="#i-shield"/></svg> Fits any shower arm</div>
+      </div>
+
+      <p class="summary__note" data-summary-guarantee></p>
+      </div><!-- /summary__details -->
+    </aside>
+
+    <!-- Payment form (Stripe) -->
+    <section class="payform">
+      <h2 class="payform__title">Payment</h2>
+      <div id="checkoutMount"></div>
+      <p class="checkout__loading" data-checkout-loading>Loading secure checkout…</p>
+      <p class="payform__foot">Payments are processed by Stripe. Your card details never touch our servers.</p>
+    </section>
+
+  </div>
+</div>
+
+<!-- ── Icon sprite ──────────────────────────────────────────────────── -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.4 3 8 7 9 4-1 7-4.6 7-9V6l-7-3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 4C10 4 4 9 4 15a5 5 0 0 0 5 5c6 0 11-6 11-16z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M4 20 14 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 7h11v9H2zM13 10h4l3 3v3h-7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17" cy="18" r="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<script src="assets/js/product.js"></script>
+<script src="assets/js/chrome.js"></script>
+<script src="https://js.stripe.com/v3/" async></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

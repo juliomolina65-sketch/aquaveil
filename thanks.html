@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Order confirmed</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+
+<div data-site-announce></div>
+<header data-site-header></header>
+
+<main>
+  <section class="phead">
+    <div class="wrap wrap--narrow thanks" data-thanks>
+      <span class="eyebrow">Order confirmed</span>
+      <h1 class="h2" data-thanks-title>Thank you.</h1>
+      <p class="lede" data-thanks-body>Checking your order…</p>
+      <div class="thanks__box" data-thanks-box hidden>
+        <p><strong>What happens next</strong></p>
+        <ul class="ticks">
+          <li>A receipt is on its way to <span data-thanks-email>your email</span>.</li>
+          <li>Your order ships within 24 hours on business days.</li>
+          <li>You'll get a tracking number by email as soon as the carrier scans it.</li>
+          <li>Run the shower for 30 seconds before the first use to flush the new cartridge.</li>
+        </ul>
+      </div>
+      <p class="thanks__actions">
+        <a class="btn btn--primary" href="install.html">How to install it</a>
+        <a class="btn btn--ghost" href="index.html">Back to the store</a>
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer data-site-footer></footer>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.4 3 8 7 9 4-1 7-4.6 7-9V6l-7-3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<script src="assets/js/product.js"></script>
+<script src="assets/js/chrome.js"></script>
+<script>
+(function () {
+  var id = new URLSearchParams(location.search).get("session_id");
+  var title = document.querySelector("[data-thanks-title]");
+  var body = document.querySelector("[data-thanks-body]");
+  var box = document.querySelector("[data-thanks-box]");
+  var money = function (cents, cur) {
+    return (cur === "usd" ? "$" : cur.toUpperCase() + " ") + (cents / 100).toFixed(2);
+  };
+  if (!id) {
+    body.textContent = "If you just placed an order, your receipt will arrive by email shortly.";
+    box.hidden = false;
+    return;
+  }
+  fetch("/api/session-status?id=" + encodeURIComponent(id))
+    .then(function (r) { return r.json(); })
+    .then(function (s) {
+      if (s.paymentStatus === "paid" || s.status === "complete") {
+        title.textContent = s.name ? "Thank you, " + s.name.split(" ")[0] + "." : "Thank you.";
+        body.textContent = "Your order for " + money(s.total, s.currency) + " is confirmed.";
+        document.querySelector("[data-thanks-email]").textContent = s.email || "your email";
+        box.hidden = false;
+      } else if (s.status === "open") {
+        title.textContent = "Payment not completed";
+        body.innerHTML = 'Your checkout was not finished. <a href="product.html">Go back to the product</a> to try again.';
+      } else {
+        body.textContent = "We could not confirm this order. If you were charged, email " + window.STORE.brand.email + " and we'll sort it out.";
+      }
+    })
+    .catch(function () {
+      body.textContent = "Your order went through. A receipt is on its way by email.";
+      box.hidden = false;
+    });
+})();
+</script>
+</body>
+</html>
